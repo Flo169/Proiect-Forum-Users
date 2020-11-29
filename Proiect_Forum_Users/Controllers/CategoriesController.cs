@@ -1,4 +1,5 @@
 ﻿using Proiect_Forum.Models;
+using Proiect_Forum_Users.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Proiect_Forum.Controllers
 {
     public class CategoriesController : Controller
     {
-        private DBContext db = new DBContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Categories
         public ActionResult Index()

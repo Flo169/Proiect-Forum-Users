@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Proiect_Forum.Models;
 
 namespace Proiect_Forum_Users.Models
 {
@@ -23,7 +24,13 @@ namespace Proiect_Forum_Users.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext,
+                Proiect_Forum_Users.Migrations.Configuration>("DefaultConnection"));
         }
+
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Topic> Topics { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public static ApplicationDbContext Create()
         {
