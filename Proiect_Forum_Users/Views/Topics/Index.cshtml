@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Topics in @ViewBag.Category.Title</h2>
+<br />
+
+<h1>@ViewBag.message</h1>
+<br />
+
+<a href="/Categories/Index/">Show categories</a>
+<br />
+<a href="/Topics/New/@ViewBag.Category.CategoryId">Add topic</a>
+<br />
+
+@foreach (var topic in ViewBag.Topics)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">@topic.Title</div>
+        <div class="panel-body">
+            Topic description: <strong>@topic.Content</strong>
+            <br />
+            <span class="label label-success">@topic.Date</span>
+            <br />
+        </div>
+        <div class="panel panel-footer">
+            <a class="btn btn-success btn btn-sm" href="/Topics/Show/@topic.TopicId">View topic</a>
+        </div>
+    </div>
+}

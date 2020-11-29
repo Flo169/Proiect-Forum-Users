@@ -1,0 +1,79 @@
+﻿@model Proiect_Forum.Models.Topic
+@{
+    ViewBag.Title = "Show"; }
+<br />
+<a href="/Topics/Index/@Model.CategoryId">Back to topics</a>
+<br />
+<div class="panel panel-default">
+    <div class="panel-heading">@Model.Title</div>
+    <div class="panel-body">
+        Post content: <strong>@Model.Content</strong>
+        <br /> <span class="label label-success">@Model.Date</span>
+        <br /> <i class="glyphicon glyphicon-globe"></i> @Model.Category.Title
+        <br />
+        <hr>
+        <a class="btn btn-success pull-left" href="/Topics/Edit/@Model.TopicId">Edit topic</a>
+        <form method="post" action="/Topics/Delete/@Model.TopicId">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button class="btn btn-danger pull-right" type="submit">Delete topic</button>
+        </form>
+    </div>
+</div>
+<br /><br />
+
+@foreach (var post in Model.Posts)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div>
+                    <p>@post.Content</p>
+                    <small class="pull-right">@post.Date</small>
+                </div>
+                <div style="display: inline-block; float : left; margin-right: 15px">
+                    <a class="glyphicon glyphicon-pencil" href="@Url.Action("Edit", "Posts", new { id1 = post.PostId, id2 = post.TopicId})"></a>
+                </div>
+                <div style="display: inline-block; float : left">
+                    <form method="post" action="@Url.Action("Delete", "Posts", new { id1 = post.PostId, id2 = post.TopicId})">
+                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                        <button class="glyphicon glyphicon-trash" style="border: none; background: transparent" type="submit"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <hr />
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+            <div class="panel">
+                <form method="post" action="/Posts/New">
+                    <div class="panel-body">
+                        @if (ViewBag.message == "Content is mandatory.")
+                        {
+                            <p class="text-danger">@ViewBag.message</p>
+                        }
+                        else
+                        {
+                            <p class="text-success">@ViewBag.message</p>
+                        }
+                        
+                        <input type="hidden" name="TopicId" value="@Model.TopicId" />
+                        <label>Post Content</label>
+                        <br />
+                        <textarea class="form-control" name="Content"></textarea>
+                        <br />
+                        <button class="btn btn-success " type="submit">Add post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>

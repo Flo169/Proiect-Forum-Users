@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Categories</h2>
+<br />
+
+<h1>@ViewBag.message</h1>
+<br />
+
+<a href="/Categories/New">Add category</a>
+<br />
+
+@foreach (var category in ViewBag.Categories)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">@category.Title</div>
+        @if (category.Description != null)
+        {
+            <div class="panel-body">
+                <p>@category.Description</p>
+                <br />
+            </div>
+        }
+            <div class="panel panel-footer">
+                <a class="btn btn-success btn btn-sm" href="/Topics/Index/@category.CategoryId">Show topics</a>
+                <a class="btn btn-warning btn btn-sm" href="/Categories/Edit/@category.CategoryId">Edit category</a>
+
+                <form style='display: inline;' method="post" action="/Categories/Delete/@category.CategoryId">
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    <button class="btn btn-danger btn btn-sm" type="submit">Delete category</button>
+                </form>
+
+            </div>
+
+    </div>
+}

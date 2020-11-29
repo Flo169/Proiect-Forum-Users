@@ -1,0 +1,29 @@
+﻿@model Proiect_Forum.Models.Topic
+@{
+    ViewBag.Title = "Edit";
+}
+
+<form method="post" action="/Topics/Edit/@Model.TopicId">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    <br />
+    @Html.HiddenFor(m => m.TopicId)
+
+    @Html.Label("Title", "Topic title")
+    <br />
+    @Html.EditorFor(m => m.Title)
+    @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+    <br /><br />
+    @Html.Label("Content", "Topic content")
+
+    <br />
+    @Html.TextArea("Content", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Content, null, new { @class = "text-danger" })
+    <br /><br />
+    @Html.HiddenFor(m => m.Date)
+
+    @Html.HiddenFor(m => m.CategoryId)
+
+    <button class="btn btn-sm btn-success" type="submit">Submit changes</button>
+</form>

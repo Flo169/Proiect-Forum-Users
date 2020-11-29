@@ -1,0 +1,25 @@
+﻿@model Proiect_Forum.Models.Topic
+
+<h2>Add topic</h2>
+
+<form method="post" action="/Topics/New">
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+    @Html.Label("Title", "Topic title")
+    <br />
+    @Html.TextBox("Title", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+    <br /><br />
+
+    @Html.Label("Content", "Initial post")
+    <br />
+    @Html.TextArea("Content", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Content, null, new { @class = "text-danger" })
+    <br /><br />
+
+    @Html.HiddenFor(m => m.CategoryId)
+
+    <button class="btn btn-sm btn-success" type="submit">Add topic</button>
+
+</form>
