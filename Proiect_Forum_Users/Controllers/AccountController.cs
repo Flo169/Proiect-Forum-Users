@@ -15,6 +15,8 @@ namespace Proiect_Forum_Users.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        // Test!
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
