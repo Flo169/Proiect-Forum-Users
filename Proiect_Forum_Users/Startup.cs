@@ -38,10 +38,10 @@ namespace Proiect_Forum_Users
                     UserManager.AddToRole(user.Id, "Admin");
                 }
             }
-            if (!roleManager.RoleExists("Editor"))
+            if (!roleManager.RoleExists("Moderator"))
             {
                 var role = new IdentityRole();
-                role.Name = "Editor";
+                role.Name = "Moderator";
                 roleManager.Create(role);
             }
             if (!roleManager.RoleExists("User"))

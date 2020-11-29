@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proiect_Forum_Users.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,5 +24,8 @@ namespace Proiect_Forum.Models
         public int TopicId { get; set; }
 
         public virtual Topic Topic { get; set; }
+
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Proiect_Forum.Models;
+﻿using Microsoft.AspNet.Identity;
+using Proiect_Forum.Models;
 using Proiect_Forum_Users.Models;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,7 @@ namespace Proiect_Forum.Controllers
             return selectList;
         }
 
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult New(int id)
         {
             Topic topic = new Topic();
@@ -61,9 +63,11 @@ namespace Proiect_Forum.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult New(Topic topic)
         {
             topic.Date = DateTime.Now;
+            topic.UserId = User.Identity.GetUserId();
             try
             {
                 if (ModelState.IsValid)
@@ -91,30 +95,48 @@ namespace Proiect_Forum.Controllers
             return View(topic);
         }
 
+        // nu uitam! Sa permitem si utilizatorului.
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id)
         {
             Topic topic = db.Topics.Find(id);
             topic.Categ = GetAllCategories();
-            return View(topic);
+
+            if (topic.UserId == User.Identity.GetUserId() || User.IsInRole("Moderator") || User.IsInRole("Admin"))
+            {
+                return View(topic);
+            }
+            else
+            {
+                TempData["message"] = "You cannot edit someone else's topic!";
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPut]
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id, Topic requestTopic)
         {
             try
             {
                 Topic topic = db.Topics.Find(id);
-                if (ModelState.IsValid && TryUpdateModel(topic))
-                {
-                    topic.Title = requestTopic.Title;
-                    topic.Content = requestTopic.Content;
-                    topic.Date = requestTopic.Date;
-                    topic.CategoryId = requestTopic.CategoryId;
-                    db.SaveChanges();
-                    return RedirectToAction("Show", new { id = topic.TopicId });
-                }
 
-                return View(requestTopic);
+                if (topic.UserId == User.Identity.GetUserId() || User.IsInRole("Moderator") || User.IsInRole("Admin"))
+                {
+                    if (ModelState.IsValid && TryUpdateModel(topic))
+                    {
+
+                        topic.Title = requestTopic.Title;
+                        topic.Content = requestTopic.Content;
+                        topic.Date = requestTopic.Date;
+                        topic.CategoryId = requestTopic.CategoryId;
+                        db.SaveChanges();
+                        return RedirectToAction("Show", new { id = topic.TopicId });
+                    }
+                    return View(requestTopic);
+                }
+                TempData["message"] = "You cannot edit someone else's topic!";
+                return RedirectToAction("Index", new { id = topic.CategoryId });
             }
             catch (Exception e)
             {
@@ -123,6 +145,7 @@ namespace Proiect_Forum.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Moderator,Admin")]
         public ActionResult Delete(int id)
         {
             Topic topic = db.Topics.Find(id);

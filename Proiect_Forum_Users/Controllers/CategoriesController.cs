@@ -26,6 +26,7 @@ namespace Proiect_Forum.Controllers
             return View();
         }
 
+        [Authorize (Roles = "Admin")]
         public ActionResult New()
         {
             Category category = new Category();
@@ -34,6 +35,7 @@ namespace Proiect_Forum.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult New(Category category)
         {
             try
@@ -55,6 +57,7 @@ namespace Proiect_Forum.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             Category category = db.Categories.Find(id);
@@ -62,6 +65,7 @@ namespace Proiect_Forum.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id, Category requestCategory)
         {
             try
@@ -85,6 +89,7 @@ namespace Proiect_Forum.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             Category category = db.Categories.Find(id);

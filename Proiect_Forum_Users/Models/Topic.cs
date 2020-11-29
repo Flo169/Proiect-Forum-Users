@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proiect_Forum_Users.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -26,5 +27,8 @@ namespace Proiect_Forum.Models
         public IEnumerable<SelectListItem> Categ { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public virtual Category Category { get; set; }
+
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

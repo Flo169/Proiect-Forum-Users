@@ -19,6 +19,7 @@ namespace Proiect_Forum.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Moderator,Admin")] // Si utilizator!
         public ActionResult Edit(int id1, int id2, Post requestPost)
         {
             try
@@ -40,6 +41,7 @@ namespace Proiect_Forum.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Moderator,Admin")]
         public ActionResult New(Post post)
         {
             post.Date = DateTime.Now;
@@ -70,6 +72,7 @@ namespace Proiect_Forum.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Moderator,Admin")]
         public ActionResult Delete(int id1, int id2)
         {
             Post post = db.Posts.Find(id1, id2);
