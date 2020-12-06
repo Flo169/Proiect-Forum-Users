@@ -11,7 +11,11 @@
 
 <a href="/Categories/Index/">Show categories</a>
 <br />
-<a href="/Topics/New/@ViewBag.Category.CategoryId">Add topic</a>
+@if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("User"))
+{
+    <a href="/Topics/New/@ViewBag.Category.CategoryId">Add topic</a>
+}
+
 <br />
 
 @foreach (var topic in ViewBag.Topics)

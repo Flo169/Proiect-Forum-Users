@@ -101,7 +101,7 @@ namespace Proiect_Forum.Controllers
         {
             Topic topic = db.Topics.Find(id);
             topic.Categ = GetAllCategories();
-
+            
             if (topic.UserId == User.Identity.GetUserId() || User.IsInRole("Moderator") || User.IsInRole("Admin"))
             {
                 return View(topic);
