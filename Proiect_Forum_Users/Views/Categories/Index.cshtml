@@ -9,8 +9,11 @@
 <h1>@ViewBag.message</h1>
 <br />
 
-<a href="/Categories/New">Add category</a>
-<br />
+@if (User.IsInRole("Admin"))
+{
+    <a href="/Categories/New">Add category</a>
+    <br />
+}
 
 @foreach (var category in ViewBag.Categories)
 {
@@ -23,16 +26,19 @@
                 <br />
             </div>
         }
-            <div class="panel panel-footer">
-                <a class="btn btn-success btn btn-sm" href="/Topics/Index/@category.CategoryId">Show topics</a>
+        <div class="panel panel-footer">
+            <a class="btn btn-success btn btn-sm" href="/Topics/Index/@category.CategoryId">Show topics</a>
+            @if (User.IsInRole("Admin"))
+            {
                 <a class="btn btn-warning btn btn-sm" href="/Categories/Edit/@category.CategoryId">Edit category</a>
 
                 <form style='display: inline;' method="post" action="/Categories/Delete/@category.CategoryId">
                     @Html.HttpMethodOverride(HttpVerbs.Delete)
                     <button class="btn btn-danger btn btn-sm" type="submit">Delete category</button>
                 </form>
+            }
 
-            </div>
+        </div>
 
     </div>
 }

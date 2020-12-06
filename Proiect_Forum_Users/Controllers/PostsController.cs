@@ -1,4 +1,5 @@
-﻿using Proiect_Forum.Models;
+﻿using Microsoft.AspNet.Identity;
+using Proiect_Forum.Models;
 using Proiect_Forum_Users.Models;
 using System;
 using System.Collections.Generic;
@@ -15,24 +16,37 @@ namespace Proiect_Forum.Controllers
         public ActionResult Edit(int id1, int id2)
         {
             Post post = db.Posts.Find(id1, id2);
-            return View(post);
+            if (post.UserId == User.Identity.GetUserId() || User.IsInRole("Moderator") || User.IsInRole("Admin"))
+            {
+                return View(post);
+            }
+            else
+            {
+                TempData["message"] = "You cannot edit someone else's topic!";
+                return RedirectToAction("Show", "Topics", new { id = post.TopicId });
+            }
         }
 
         [HttpPut]
-        [Authorize(Roles = "Moderator,Admin")] // Si utilizator!
+        [Authorize(Roles = "User,Moderator,Admin")] // Si utilizator!
         public ActionResult Edit(int id1, int id2, Post requestPost)
         {
             try
             {
                 Post post = db.Posts.Find(id1, id2);
-                if (ModelState.IsValid && TryUpdateModel(post))
+                if (post.UserId == User.Identity.GetUserId() || User.IsInRole("Moderator") || User.IsInRole("Admin"))
                 {
-                    post.Content = requestPost.Content;
-                    post.Date = requestPost.Date;
-                    db.SaveChanges();
-                    return RedirectToAction("Show", "Topics", new { id = post.TopicId });
+                    if (ModelState.IsValid && TryUpdateModel(post))
+                    {
+                        post.Content = requestPost.Content;
+                        post.Date = requestPost.Date;
+                        db.SaveChanges();
+                        return RedirectToAction("Show", "Topics", new { id = post.TopicId });
+                    }
+                    return View(requestPost);
                 }
-                return View(requestPost);
+                TempData["message"] = "You cannot edit someone else's topic!";
+                return RedirectToAction("Show", "Topics", new { id = post.TopicId });
             }
             catch (Exception e)
             {
@@ -41,7 +55,7 @@ namespace Proiect_Forum.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Moderator,Admin")]
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult New(Post post)
         {
             post.Date = DateTime.Now;
@@ -50,6 +64,8 @@ namespace Proiect_Forum.Controllers
                 post.PostId = 0;
             else
                 post.PostId = (int) maxid + 1;
+
+            post.UserId = User.Identity.GetUserId();
 
             try
             {
@@ -72,15 +88,21 @@ namespace Proiect_Forum.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Moderator,Admin")]
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Delete(int id1, int id2)
         {
             Post post = db.Posts.Find(id1, id2);
             int TopicId = post.TopicId;
 
-            TempData["message"] = "The post has been deleted.";
-            db.Posts.Remove(post);
-            db.SaveChanges();
+            if (post.UserId == User.Identity.GetUserId() || User.IsInRole("Moderator") || User.IsInRole("Admin"))
+            {
+                TempData["message"] = "The post has been deleted.";
+                db.Posts.Remove(post);
+                db.SaveChanges();
+                return RedirectToAction("Show", "Topics", new { id = post.TopicId });
+            }
+            
+            TempData["message"] = "You cannot delete someone else's topic!";
             return RedirectToAction("Show", "Topics", new { id = post.TopicId });
         }
     }

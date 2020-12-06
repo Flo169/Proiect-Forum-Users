@@ -89,6 +89,8 @@ namespace Proiect_Forum.Controllers
         {
             Topic topic = db.Topics.Find(id);
 
+            ViewBag.userId = User.Identity.GetUserId();
+
             if (TempData.ContainsKey("message"))
                 ViewBag.message = TempData["message"].ToString();
 
