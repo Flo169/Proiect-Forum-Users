@@ -99,5 +99,29 @@ namespace Proiect_Forum_Users.Controllers
                 return View(newData);
             }
         }
+
+        [HttpDelete]
+        public ActionResult Delete(string id)
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+            var UserManager = new UserManager<ApplicationUser>(new
+                UserStore<ApplicationUser>(context));
+            var user = UserManager.Users.FirstOrDefault(u => u.Id == id);
+            // de verificat stergerea adminului
+            var topics = db.Topics.Where(t => t.UserId == id);
+            foreach (var topic in topics)
+            {
+                db.Topics.Remove(topic);
+            }
+            var posts = db.Posts.Where(post => post.UserId == id);
+            foreach (var post in posts)
+            {
+                db.Posts.Remove(post);
+            }
+
+            db.SaveChanges();
+            UserManager.Delete(user);
+            return RedirectToAction("Index");
+        }
     }
 }
