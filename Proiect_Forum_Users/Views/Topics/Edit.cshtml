@@ -21,9 +21,22 @@
     @Html.TextArea("Content", null, new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.Content, null, new { @class = "text-danger" })
     <br /><br />
+
     @Html.HiddenFor(m => m.Date)
 
-    @Html.HiddenFor(m => m.CategoryId)
+    @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+    {
+        <label>Select category</label>
+        @Html.DropDownListFor(m => m.CategoryId,
+            new SelectList(Model.Categ, "Value", "Text"),
+            "Select category", new { @class = "form-control" })
+
+        @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-danger" })
+    }
+    else
+    {
+        @Html.HiddenFor(m => m.CategoryId)
+    }
 
     @Html.HiddenFor(m => m.UserId)
 

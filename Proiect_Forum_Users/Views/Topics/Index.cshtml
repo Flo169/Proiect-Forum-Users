@@ -23,8 +23,13 @@
     <div class="panel panel-default">
         <div class="panel-heading">@topic.Title</div>
         <div class="panel-body">
-            Topic description: <strong>@topic.Content</strong>
+            Topic description:
+            
+            <br/>
+            <strong style="white-space: pre-line;">@topic.Content</strong>
             <br />
+
+            <br/>
             <span class="label label-success">@topic.Date</span>
             <br />
             <i class="glyphicon glyphicon-user"></i> <i>created by</i> <strong> @topic.User.UserName </strong>
