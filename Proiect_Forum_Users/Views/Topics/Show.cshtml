@@ -17,8 +17,8 @@
         <i class="glyphicon glyphicon-user"></i> <i>created by</i> <strong> @Model.User.UserName </strong>
         <br />
         @*
-        <br /> <i class="glyphicon glyphicon-globe"></i>@Model.Category.Title</!-->
-        <br />
+            <br /> <i class="glyphicon glyphicon-globe"></i>@Model.Category.Title</!-->
+            <br />
         *@
         <hr>
 
@@ -49,7 +49,7 @@
                 </div>
                 @if (User.IsInRole("Admin") || User.IsInRole("Moderator") || post.UserId == ViewBag.userId)
                 {
-                    <br/>
+                    <br />
 
                     <div style="display: inline-block; float : left; margin-right: 15px">
                         <a class="glyphicon glyphicon-pencil" href="@Url.Action("Edit", "Posts", new { id1 = post.PostId, id2 = post.TopicId })"></a>
@@ -69,33 +69,36 @@
     <hr />
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-8">
-            <div class="panel">
-                <form method="post" action="/Posts/New">
-                    <div class="panel-body">
-                        @if (ViewBag.message == "Content is mandatory.")
-                        {
-                            <p class="text-danger">@ViewBag.message</p>
-                        }
-                        else
-                        {
-                            <p class="text-success">@ViewBag.message</p>
-                        }
-                        
-                        <input type="hidden" name="TopicId" value="@Model.TopicId" />
-                        <label>Post Content</label>
-                        <br />
-                        <textarea class="form-control" name="Content"></textarea>
-                        <br />
-                        <button class="btn btn-success " type="submit">Add post</button>
-                    </div>
-                </form>
+@if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("User"))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
             </div>
+            <div class="col-md-8">
+                <div class="panel">
+                    <form method="post" action="/Posts/New">
+                        <div class="panel-body">
+                            @if (ViewBag.message == "Content is mandatory.")
+                            {
+                                <p class="text-danger">@ViewBag.message</p>
+                            }
+                            else
+                            {
+                                <p class="text-success">@ViewBag.message</p>
+                            }
+
+                            <input type="hidden" name="TopicId" value="@Model.TopicId" />
+                            <label>Post Content</label>
+                            <br />
+                            <textarea class="form-control" name="Content"></textarea>
+                            <br />
+                            <button class="btn btn-success " type="submit">Add post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
         </div>
-        <div class="col-md-2"></div>
     </div>
-</div>
+}
