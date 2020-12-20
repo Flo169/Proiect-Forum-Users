@@ -12,21 +12,65 @@ namespace Proiect_Forum.Controllers
     public class TopicsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private int perPage = 3;
 
         // GET: Topics
         public ActionResult Index(int id)
         {
             var category = db.Categories.Find(id);
             var topics = from top in db.Topics
-                         where top.CategoryId == id select top;
+                         orderby top.Date
+                         where top.CategoryId == id
+                         select top;
+            var search = "";
 
-            ViewBag.Category = category;
-            ViewBag.Topics = topics;
+            if (Request.Params.Get("search") != null)
+            {
+                search = Request.Params.Get("search").Trim();
+
+                List<int> topicIds = db.Topics.Where(
+                    at => at.Title.Contains(search)
+                    || at.Content.Contains(search)
+                    ).Select(t => t.TopicId).ToList();
+
+                List<int> postIds = db.Posts.Where(
+                    p => p.Content.Contains(search)
+                    ).Select(post => post.TopicId).ToList();
+
+                List<int> mergedIds = topicIds.Union(postIds).ToList();
+
+                topics = from top in db.Topics
+                         orderby top.Date
+                         where top.CategoryId == id && mergedIds.Contains(top.TopicId)
+                         select top;
+            }
+
+            var totalItems = topics.Count();
+            var currentPage = 1;
+            if (Request.Params.Get("page") != null)
+                currentPage = Convert.ToInt32(Request.Params.Get("page"));
+
+            var offset = 0;
+
+            if (!currentPage.Equals(0))
+            {
+                offset = (currentPage - 1) * this.perPage;
+            }
+
+            var paginatedTopics = topics.Skip(offset).Take(this.perPage);
 
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.message = TempData["message"].ToString();
             }
+
+            ViewBag.total = totalItems;
+            ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)this.perPage);
+            ViewBag.currentPage = currentPage;
+            ViewBag.Category = category;
+            ViewBag.Topics = paginatedTopics;
+            ViewBag.SearchString = search;
+
             return View();
         }
 
