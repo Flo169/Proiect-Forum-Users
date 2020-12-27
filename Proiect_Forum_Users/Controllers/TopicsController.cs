@@ -22,6 +22,47 @@ namespace Proiect_Forum.Controllers
                          orderby top.Date
                          where top.CategoryId == id
                          select top;
+            var sort = Request.Params.Get("sort");
+
+            if (sort == null)
+            {
+                sort = "date-desc";
+            }
+
+            switch (sort)
+            {
+                case "date-desc":
+                    topics = from top in db.Topics
+                                orderby top.Date descending
+                                where top.CategoryId == id
+                                select top;
+                    break;
+                case "date-asc":
+                    topics = from top in db.Topics
+                                orderby top.Date ascending
+                                where top.CategoryId == id
+                                select top;
+                    break;
+                case "author-desc":
+                    topics = from top in db.Topics
+                                orderby top.User.UserName descending
+                                where top.CategoryId == id
+                                select top;
+                    break;
+                case "author-asc":
+                    topics = from top in db.Topics
+                                orderby top.User.UserName ascending
+                                where top.CategoryId == id
+                                select top;
+                    break;
+                default:
+                    topics = from top in db.Topics
+                             orderby top.Date descending
+                             where top.CategoryId == id
+                             select top;
+                    break;
+            }
+            
             var search = "";
 
             if (Request.Params.Get("search") != null)
@@ -39,10 +80,39 @@ namespace Proiect_Forum.Controllers
 
                 List<int> mergedIds = topicIds.Union(postIds).ToList();
 
-                topics = from top in db.Topics
-                         orderby top.Date
-                         where top.CategoryId == id && mergedIds.Contains(top.TopicId)
-                         select top;
+                switch (sort)
+                {
+                    case "date-desc":
+                        topics = from top in db.Topics
+                                 orderby top.Date descending
+                                 where top.CategoryId == id && mergedIds.Contains(top.TopicId)
+                                 select top;
+                        break;
+                    case "date-asc":
+                        topics = from top in db.Topics
+                                 orderby top.Date ascending
+                                 where top.CategoryId == id && mergedIds.Contains(top.TopicId)
+                                 select top;
+                        break;
+                    case "author-desc":
+                        topics = from top in db.Topics
+                                 orderby top.User.UserName descending
+                                 where top.CategoryId == id && mergedIds.Contains(top.TopicId)
+                                 select top;
+                        break;
+                    case "author-asc":
+                        topics = from top in db.Topics
+                                 orderby top.User.UserName ascending
+                                 where top.CategoryId == id && mergedIds.Contains(top.TopicId)
+                                 select top;
+                        break;
+                    default:
+                        topics = from top in db.Topics
+                                 orderby top.Date descending
+                                 where top.CategoryId == id && mergedIds.Contains(top.TopicId)
+                                 select top;
+                        break;
+                }
             }
 
             var totalItems = topics.Count();
@@ -64,6 +134,7 @@ namespace Proiect_Forum.Controllers
                 ViewBag.message = TempData["message"].ToString();
             }
 
+            ViewBag.order = sort;
             ViewBag.total = totalItems;
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)this.perPage);
             ViewBag.currentPage = currentPage;

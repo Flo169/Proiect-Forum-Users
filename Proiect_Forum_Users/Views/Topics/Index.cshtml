@@ -38,6 +38,20 @@
     </div>
 </div>
 <br />
+
+<form action="/Topics/Index/@ViewBag.Category.CategoryId" method="POST">
+    <label for="sort">Order by:</label>
+
+    <select name="sort" id="sort">
+        <option value="date-desc">Date Descending</option>
+        <option value="date-asc">Date Ascending</option>
+        <option value="author-desc">Author Descending</option>
+        <option value="author-asc">Author Ascending</option>
+    </select>
+
+    <input type="submit" value="Sort">
+</form>
+
 <div>
     <nav aria-label="Page navigation">
         <ul class="pagination">
