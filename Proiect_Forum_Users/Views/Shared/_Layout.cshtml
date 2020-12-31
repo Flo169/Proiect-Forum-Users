@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -23,7 +25,11 @@
                     <li>@Html.ActionLink("Home", "Index", "Categories")</li>
                     @if (User.IsInRole("Admin"))
                     {
-                        <li>@Html.ActionLink("Afisare utilizatori", "Index", "Users")</li>
+                        <li>@Html.ActionLink("Show users", "Index", "Users")</li>
+                    }
+                    else if (User.IsInRole("Moderator") || User.IsInRole("User"))
+                    {
+                        <li>@Html.ActionLink("Edit profile", "Edit", "Users", new { id = User.Identity.GetUserId() })</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

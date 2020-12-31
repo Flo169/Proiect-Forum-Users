@@ -9,12 +9,13 @@ using System.Web.Mvc;
 
 namespace Proiect_Forum_Users.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "User,Moderator,Admin")]
     public class UsersController : Controller
     {
         private ApplicationDbContext db = ApplicationDbContext.Create();
 
         // GET: Users
+        //[Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var users = from user in db.Users
@@ -25,6 +26,7 @@ namespace Proiect_Forum_Users.Controllers
             return View();
         }
 
+        //[Authorize(Roles = "Admin")]
         public ActionResult Show(string id)
         {
             ApplicationUser user = db.Users.Find(id);
@@ -39,13 +41,22 @@ namespace Proiect_Forum_Users.Controllers
             return View(user);
         }
 
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(string id)
         {
             ApplicationUser user = db.Users.Find(id);
             user.AllRoles = GetAllRoles();
             var userRole = user.Roles.FirstOrDefault();
             ViewBag.userRole = userRole.RoleId;
-            return View(user);
+            if (id == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            {
+                return View(user);
+            }
+            else
+            {
+                TempData["message"] = "You cannot edit someone else's profile!";
+                return RedirectToAction("Index", "Categories");
+            }
         }
 
         [NonAction]
@@ -65,6 +76,7 @@ namespace Proiect_Forum_Users.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(string id, ApplicationUser newData)
         {
             ApplicationUser user = db.Users.Find(id);
@@ -101,6 +113,7 @@ namespace Proiect_Forum_Users.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(string id)
         {
             ApplicationDbContext context = new ApplicationDbContext();

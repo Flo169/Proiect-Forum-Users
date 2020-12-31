@@ -3,7 +3,7 @@
 @{
     /**/
 
-    ViewBag.Title = "Editare rol utilizator";
+    ViewBag.Title = "Edit profile";
 }
 
 <ol class="breadcrumb">
@@ -26,8 +26,18 @@
     <br />
     @Html.EditorFor(m => m.PhoneNumber)
     <br /><br />
-    <i class="glyphicon glyphicon-th-list"></i>
-    <label>Selectati rolul</label> @Html.DropDownList("newRole", new SelectList(Model.AllRoles, "Value", "Text", ViewBag.userRole), null, new { @class = "form-control" })
-    <br />
-    <button class="btn btn-sm btn-success" type="submit">Modifica datele utilizatorului</button>
+    if (User.IsInRole("Admin"))
+    {
+        <i class="glyphicon glyphicon-th-list"></i>
+        <label>Select role</label> @Html.DropDownList("newRole", new SelectList(Model.AllRoles, "Value", "Text", ViewBag.userRole), null, new { @class = "form-control" })
+        <br />
+    }
+    else
+    {
+        <div>
+            Role: @ViewBag.userRole
+        </div>
+        <br />
+    }
+    <button class="btn btn-sm btn-success" type="submit">Change profile</button>
 }
