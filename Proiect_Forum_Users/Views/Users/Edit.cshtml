@@ -27,6 +27,7 @@
     <br />
     @Html.EditorFor(m => m.PhoneNumber)
     <br /><br />
+
     if (User.IsInRole("Admin"))
     {
         <i class="glyphicon glyphicon-th-list"></i>
@@ -36,7 +37,7 @@
     else
     {
         <div>
-            Role: @
+            <b>Role: @ViewBag.roleName</b>
         </div>
         <br />
     }

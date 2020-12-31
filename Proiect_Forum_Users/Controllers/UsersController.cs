@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Diagnostics;
 
 namespace Proiect_Forum_Users.Controllers
 {
@@ -48,7 +49,13 @@ namespace Proiect_Forum_Users.Controllers
             user.AllRoles = GetAllRoles();
             var userRole = user.Roles.FirstOrDefault();
             ViewBag.userRole = userRole.RoleId;
-           
+            var userRoleName = (from role in db.Roles
+                                where role.Id == userRole.RoleId
+                                select role.Name).First();
+
+            ViewBag.roleName = userRoleName;
+
+
             if (id == User.Identity.GetUserId() || User.IsInRole("Admin"))
             {
                 return View(user);
@@ -82,6 +89,7 @@ namespace Proiect_Forum_Users.Controllers
         {
             ApplicationUser user = db.Users.Find(id);
             user.AllRoles = GetAllRoles();
+            Debug.WriteLine("id: " + id);
             var userRole = user.Roles.FirstOrDefault();
             ViewBag.userRole = userRole.RoleId;
             try
@@ -94,16 +102,19 @@ namespace Proiect_Forum_Users.Controllers
                     user.UserName = newData.UserName;
                     user.Email = newData.Email;
                     user.PhoneNumber = newData.PhoneNumber;
-                    var roles = from role in db.Roles select role;
-                    foreach (var role in roles)
+                    if (User.IsInRole("Admin"))
                     {
-                        UserManager.RemoveFromRole(id, role.Name);
+                        var roles = from role in db.Roles select role;
+                        foreach (var role in roles)
+                        {
+                            UserManager.RemoveFromRole(id, role.Name);
+                        }
+                        var selectedRole = db.Roles.Find(HttpContext.Request.Params.Get("newRole"));
+                        UserManager.AddToRole(id, selectedRole.Name);
                     }
-                    var selectedRole = db.Roles.Find(HttpContext.Request.Params.Get("newRole"));
-                    UserManager.AddToRole(id, selectedRole.Name);
                     db.SaveChanges();
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Categories");
             }
             catch (Exception e)
             {
