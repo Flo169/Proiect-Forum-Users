@@ -29,7 +29,8 @@
                     }
                     else if (User.IsInRole("Moderator") || User.IsInRole("User"))
                     {
-                        <li>@Html.ActionLink("Edit profile", "Edit", "Users", new { id = User.Identity.GetUserId() })</li>
+                        @*<li>@Html.ActionLink("Edit profile", "Edit", "Users", new { id = User.Identity.GetUserId() })</li>*@
+                        <li><a href="/Users/Edit/@User.Identity.GetUserId()">Edit profile</a></li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

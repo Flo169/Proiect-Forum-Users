@@ -15,7 +15,7 @@ namespace Proiect_Forum_Users.Controllers
         private ApplicationDbContext db = ApplicationDbContext.Create();
 
         // GET: Users
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var users = from user in db.Users
@@ -26,7 +26,7 @@ namespace Proiect_Forum_Users.Controllers
             return View();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Show(string id)
         {
             ApplicationUser user = db.Users.Find(id);
@@ -48,6 +48,7 @@ namespace Proiect_Forum_Users.Controllers
             user.AllRoles = GetAllRoles();
             var userRole = user.Roles.FirstOrDefault();
             ViewBag.userRole = userRole.RoleId;
+           
             if (id == User.Identity.GetUserId() || User.IsInRole("Admin"))
             {
                 return View(user);
