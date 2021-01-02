@@ -22,6 +22,7 @@
     <i class="glyphicon glyphicon-envelope"></i> @Html.Label("Email", "Email utilizator", new { @class = "" })
     <br />
     @Html.EditorFor(m => m.Email)
+    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
     <br /><br />
     <i class="glyphicon glyphicon-phone"></i> @Html.Label("PhoneNumber", "Numar telefon")
     <br />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -77,7 +78,12 @@ namespace Proiect_Forum_Users.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            string userName = model.Email;
+            var user = UserManager.FindByEmail(model.Email);
+            if (user != null)
+                userName = user.UserName;
+
+            var result = await SignInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:

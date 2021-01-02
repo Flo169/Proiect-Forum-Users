@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -14,6 +15,9 @@ namespace Proiect_Forum_Users.Models
     public class ApplicationUser : IdentityUser
     {
         public IEnumerable<SelectListItem> AllRoles { get; set; }
+
+        [EmailAddress(ErrorMessage = "Email format incorrect.")]
+        public override string Email { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

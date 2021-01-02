@@ -89,7 +89,6 @@ namespace Proiect_Forum_Users.Controllers
         {
             ApplicationUser user = db.Users.Find(id);
             user.AllRoles = GetAllRoles();
-            Debug.WriteLine("id: " + id);
             var userRole = user.Roles.FirstOrDefault();
             ViewBag.userRole = userRole.RoleId;
             try
@@ -101,6 +100,8 @@ namespace Proiect_Forum_Users.Controllers
                 {
                     user.UserName = newData.UserName;
                     user.Email = newData.Email;
+                    Debug.WriteLine("newdata mail: " + newData.Email);
+                    Debug.WriteLine("newdata username: " + newData.UserName);
                     user.PhoneNumber = newData.PhoneNumber;
                     if (User.IsInRole("Admin"))
                     {
