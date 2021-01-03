@@ -15,16 +15,17 @@
 {
     @Html.HttpMethodOverride(HttpVerbs.Put)
     <br />
-    <i class="glyphicon glyphicon-user"></i> @Html.Label("UserName", "Nume utilizator", new { @class = "" })
+    <i class="glyphicon glyphicon-user"></i> 
+    @Html.Label("UserName", "User name", new { @class = "" })
     <br />
     @Html.EditorFor(m => m.UserName)
     <br /><br />
-    <i class="glyphicon glyphicon-envelope"></i> @Html.Label("Email", "Email utilizator", new { @class = "" })
+    <i class="glyphicon glyphicon-envelope"></i> @Html.Label("Email", "Email", new { @class = "" })
     <br />
     @Html.EditorFor(m => m.Email)
     @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
     <br /><br />
-    <i class="glyphicon glyphicon-phone"></i> @Html.Label("PhoneNumber", "Numar telefon")
+    <i class="glyphicon glyphicon-phone"></i> @Html.Label("PhoneNumber", "Phone number")
     <br />
     @Html.EditorFor(m => m.PhoneNumber)
     <br /><br />

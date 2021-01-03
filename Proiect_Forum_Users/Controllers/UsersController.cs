@@ -27,7 +27,7 @@ namespace Proiect_Forum_Users.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Show(string id)
         {
             ApplicationUser user = db.Users.Find(id);
@@ -100,8 +100,6 @@ namespace Proiect_Forum_Users.Controllers
                 {
                     user.UserName = newData.UserName;
                     user.Email = newData.Email;
-                    Debug.WriteLine("newdata mail: " + newData.Email);
-                    Debug.WriteLine("newdata username: " + newData.UserName);
                     user.PhoneNumber = newData.PhoneNumber;
                     if (User.IsInRole("Admin"))
                     {

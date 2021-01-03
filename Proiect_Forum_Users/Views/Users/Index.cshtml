@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Afisare utilizatori";
+    ViewBag.Title = "User list";
 }
 <ol class="breadcrumb">
     <li><h3>@ViewBag.Title</h3></li>
@@ -7,17 +7,13 @@
 
 @foreach (var user in ViewBag.UsersList)
 {
-    <div class="panel-heading">Nume utilizator: @user.UserName</div>
+    <div class="panel-heading">User name: @user.UserName</div>
     <div class="panel-body">
-    <i class="glyphicon glyphicon-envelope"></i> Email utilizator: <span class="label label-default">@user.Email</span>
-    <br /><br />
-    @if (@user.PhoneNumber != null)
-    {
-        <i class="glyphicon glyphicon-phone"></i>@:Telefon utilizator:<span class="label label default">@user.PhoneNumber</span>
-    }
+    <i class="glyphicon glyphicon-envelope"></i> Email: <span class="label label-default">@user.Email</span>
+    <br />
     </div>
     <div class="panel-footer">
-        <a class="btn btn-sm btn-warning" href="/Users/Edit/@user.Id"> Editare utilizator</a> <a class="btn btn-sm btn-success" href="/Users/Show/@user.Id"> Vizualizare utilizator</a>
+        <a class="btn btn-sm btn-warning" href="/Users/Edit/@user.Id"> Edit user</a> <a class="btn btn-sm btn-success" href="/Users/Show/@user.Id"> Show user details</a>
     </div>
     <br /><br />
 }

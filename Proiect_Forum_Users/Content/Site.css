@@ -1,22 +1,119 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #e0e0d1;
+    color: #586e75;
+    font-family:'Trebuchet MS';
 }
 
-/* Set padding to keep content from hitting the edges */
+.panel {
+    background-color: #fdf6e3;
+    border-color: #734d26;
+}
+
+.panel-footer {
+    border-color: #fff0b3;
+}
+
+.panel-heading {
+    background-color: #fdf6e3;
+    border-color: #d9b38c;
+}
+
+.panel > .panel-heading {
+    background-image: none;
+    background-color: #fdf6e3;
+    color: #586e75;
+    font-size: 12pt;
+    font-weight: bold;
+    border-color: #d9b38c;
+}
+
+.panel-body {
+    background-color: #fdf6e3;
+}
+
+a {
+    color: #800000;
+}
+
+.pagination > li > a {
+    background-color: white;
+    color: #5A4181;
+}
+
+    .pagination > li > a:focus,
+    .pagination > li > a:hover,
+    .pagination > li > span:focus,
+    .pagination > li > span:hover {
+        color: #800000;
+        background-color: #ffcccc;
+        border-color: #ff8080;
+    }
+
+.pagination > .active > a {
+    color: white;
+    background-color: #800000 !Important;
+    border: solid 1px #800000 !Important;
+}
+
+    .pagination > .active > a:hover {
+        background-color: #800000 !Important;
+        border: solid 1px #800000;
+    }
+
+.btn-success {
+    background-color: #77b300;
+}
+
+.btn-warning {
+    background-color: #e68a00
+}
+
+.btn-danger {
+    background-color: #b33c00;
+}
+
+.label-success {
+    background-color: #77b300;
+}
+
+.panel-footer {
+    background-color: #fdf6e3;
+}
+
+.breadcrumb {
+    background-color: #fdf6e3;
+}
+
+.navbar {
+    background-color: #fdf6e3;
+    border-color: #734d26;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #586e75;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+    color: #800000;
+} 
+
+/* Set padding to keep content from hitting the edges /
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
+/ Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
-*/
+/
 .dl-horizontal dt {
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
+/ Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
