@@ -212,7 +212,6 @@ namespace Proiect_Forum.Controllers
             return View(topic);
         }
 
-        // nu uitam! Sa permitem si utilizatorului.
         [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id)
         {
@@ -237,12 +236,12 @@ namespace Proiect_Forum.Controllers
             try
             {
                 Topic topic = db.Topics.Find(id);
+                requestTopic.Categ = GetAllCategories();
 
                 if (topic.UserId == User.Identity.GetUserId() || User.IsInRole("Moderator") || User.IsInRole("Admin"))
                 {
                     if (ModelState.IsValid && TryUpdateModel(topic))
                     {
-
                         topic.Title = requestTopic.Title;
                         topic.Content = requestTopic.Content;
                         topic.Date = requestTopic.Date;

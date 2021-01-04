@@ -88,7 +88,7 @@ namespace Proiect_Forum_Users.Controllers
         public ActionResult Edit(string id, ApplicationUser newData)
         {
             ApplicationUser user = db.Users.Find(id);
-            user.AllRoles = GetAllRoles();
+            newData.AllRoles = GetAllRoles();
             var userRole = user.Roles.FirstOrDefault();
             ViewBag.userRole = userRole.RoleId;
             try
@@ -96,7 +96,7 @@ namespace Proiect_Forum_Users.Controllers
                 ApplicationDbContext context = new ApplicationDbContext();
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
                 var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                if (TryUpdateModel(user))
+                if (ModelState.IsValid && TryUpdateModel(user))
                 {
                     user.UserName = newData.UserName;
                     user.Email = newData.Email;
@@ -112,8 +112,12 @@ namespace Proiect_Forum_Users.Controllers
                         UserManager.AddToRole(id, selectedRole.Name);
                     }
                     db.SaveChanges();
+                    if (User.IsInRole("Admin"))
+                        return RedirectToAction("Index", "Users");
+                    return RedirectToAction("Index", "Categories");
                 }
-                return RedirectToAction("Index", "Categories");
+                newData.Id = id;
+                return View(newData);
             }
             catch (Exception e)
             {

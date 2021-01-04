@@ -5,7 +5,7 @@
 
 <h2>Topics in @ViewBag.Category.Title</h2>
 
-<h1>@ViewBag.message</h1>
+<p style="font-size: 110%; color: #800000">@ViewBag.message</p>
 
 <div class="container">
     <br />
@@ -29,6 +29,7 @@
                                 type="submit">
                             Search
                         </button>
+                        <a href="/Topics/Index/@ViewBag.Category.CategoryId?page=1&search=" class="btn btn-warning">Reset search</a>
                     </div>
                     <!--end of col-->
                 </div>

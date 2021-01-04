@@ -16,8 +16,6 @@ namespace Proiect_Forum_Users.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        // Test!
-
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -173,8 +171,10 @@ namespace Proiect_Forum_Users.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     UserManager.AddToRole(user.Id, "User");
+                    // await UserManager.AddToRoleAsync(user.Id, "User");
+                    // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Categories");
                 }
                 AddErrors(result);
             }

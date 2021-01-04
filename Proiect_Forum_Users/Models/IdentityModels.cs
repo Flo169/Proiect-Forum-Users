@@ -16,7 +16,11 @@ namespace Proiect_Forum_Users.Models
     {
         public IEnumerable<SelectListItem> AllRoles { get; set; }
 
+        [Required(ErrorMessage = "User name is mandatory!")]
+        public override string UserName { get; set; }
+
         [EmailAddress(ErrorMessage = "Email format incorrect.")]
+        [Required(ErrorMessage = "Email is mandatory!")]
         public override string Email { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)

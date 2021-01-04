@@ -15,20 +15,20 @@ namespace Proiect_Forum.Controllers
 
         public ActionResult Edit(int id1, int id2)
         {
-            Post post = db.Posts.Find(id1, id2);
+            Post post = db.Posts.Find(id1, id2); // PostId, TopicId
             if (post.UserId == User.Identity.GetUserId() || User.IsInRole("Moderator") || User.IsInRole("Admin"))
             {
                 return View(post);
             }
             else
             {
-                TempData["message"] = "You cannot edit someone else's topic!";
+                TempData["message"] = "You cannot edit someone else's post!";
                 return RedirectToAction("Show", "Topics", new { id = post.TopicId });
             }
         }
 
         [HttpPut]
-        [Authorize(Roles = "User,Moderator,Admin")] // Si utilizator!
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id1, int id2, Post requestPost)
         {
             try
@@ -45,7 +45,7 @@ namespace Proiect_Forum.Controllers
                     }
                     return View(requestPost);
                 }
-                TempData["message"] = "You cannot edit someone else's topic!";
+                TempData["message"] = "You cannot edit someone else's post!";
                 return RedirectToAction("Show", "Topics", new { id = post.TopicId });
             }
             catch (Exception e)
@@ -102,7 +102,7 @@ namespace Proiect_Forum.Controllers
                 return RedirectToAction("Show", "Topics", new { id = post.TopicId });
             }
             
-            TempData["message"] = "You cannot delete someone else's topic!";
+            TempData["message"] = "You cannot delete someone else's post!";
             return RedirectToAction("Show", "Topics", new { id = post.TopicId });
         }
     }
